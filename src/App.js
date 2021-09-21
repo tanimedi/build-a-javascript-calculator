@@ -3,11 +3,11 @@ import React, { useState } from "react";
 
 export default function App() {
   const [display, setDisplay] = React.useState(0);
-  const [result, setResult] = React.useState(0);
+  const [result, setResult] = React.useState("");
 
   function allClear() {
     setDisplay(0);
-    setResult(0);
+    setResult("");
   }
 
   function handleSigns(event) {
@@ -18,9 +18,11 @@ export default function App() {
         isNaN(result.charAt(result.length - 2))
       ) {
         setDisplay(buttonText);
+        console.log(5.1);
       } else {
         setResult(result + buttonText);
         setDisplay(buttonText);
+        console.log(5.2);
       }
     } else if (isNaN(display)) {
       if (
@@ -28,15 +30,16 @@ export default function App() {
         isNaN(result.charAt(result.length - 2))
       ) {
         setResult(result.slice(0, -2) + buttonText);
+        console.log(5.3);
       } else {
         setResult(result.slice(0, -1) + buttonText);
         setDisplay(buttonText);
-        console.log(5.1);
+        console.log(5.4);
       }
     } else {
       setResult((prevResult) => prevResult + buttonText);
       setDisplay(buttonText);
-      console.log(5.2);
+      console.log(5.5);
     }
   }
 
@@ -46,59 +49,68 @@ export default function App() {
       setDisplay(".");
       setResult(result + buttonText);
       console.log(2.1);
-    } else if (typeof display === "number") {
-      setDisplay(display + buttonText);
-      setResult(result + buttonText);
-      console.log(2.2);
     } else if (display.includes(".")) {
       setDisplay(display);
       console.log(2.3);
+    } else if (
+      display !== "+" ||
+      display !== "/" ||
+      display !== "*" ||
+      display !== "-"
+    ) {
+      setDisplay(display + buttonText);
+      setResult(result + buttonText);
+      console.log(2.2);
     }
   }
 
   function inputNumber(event) {
     const buttonText = event.target.innerText;
-    if (display === 0 && buttonText === 0) {
+    if (display === 0 && buttonText === "0") {
       setDisplay(parseInt(buttonText));
       console.log(1.1);
     } else if (display === 0) {
-      setDisplay(parseInt(buttonText));
-      setResult(buttonText);
-      console.log(3.1);
+      setDisplay(buttonText);
+      setResult(result + buttonText);
+      console.log(1.2);
     } else if (
       isNaN(result.charAt(result.length - 1)) &&
-      isNaN(result.charAt(result.length - 2))
+      isNaN(result.charAt(result.length - 2)) &&
+      result.charAt(result.length - 1) !== "."
     ) {
       setResult((prevResult) => prevResult.slice(0, -1));
       setResult((prevResult) => prevResult + "(" + -buttonText + ")");
       setDisplay(buttonText);
+      console.log(1.3);
+    } else if (
+      display !== "+" &&
+      display !== "/" &&
+      display !== "*" &&
+      display !== "-"
+    ) {
+      setDisplay(display + buttonText);
+      setResult(result + buttonText);
+      console.log(1.4);
+    } else if (isNaN(display)) {
+      setResult(result + buttonText);
+      setDisplay(buttonText);
     } else if (display.includes(".")) {
       setDisplay(display + buttonText);
       setResult(result + buttonText);
-    } else {
-      setDisplay(buttonText);
-      setResult(result + buttonText);
-      console.log(6.2);
     }
-  }
-  console.log(result);
-  function cleanInputs() {
-    result.replaceAll("X", "*");
-    setResult(result);
-    console.log(result);
   }
 
   function calculate() {
-    setDisplay((prevResult) => {
-      setResult(prevResult);
-      return eval(result);
-    });
+    setResult(eval(result));
+    setDisplay(eval(result));
   }
-
+  console.log(result);
   return (
     <div className="App">
       <div id="container">
-        <div id="display">{display}</div>
+        <div id="display">{result}</div>
+        <div id="inputs">{display}</div>
+
         <div id="clear" className="button" onClick={allClear}>
           AC
         </div>
@@ -108,37 +120,37 @@ export default function App() {
         <div id="multiply" className="button" onClick={handleSigns}>
           *
         </div>
-        <div className="button" onClick={inputNumber}>
+        <div id="seven" className="button" onClick={inputNumber}>
           7
         </div>
-        <div className="button" onClick={inputNumber}>
+        <div id="eight" className="button" onClick={inputNumber}>
           8
         </div>
-        <div className="button" onClick={inputNumber}>
+        <div id="nine" className="button" onClick={inputNumber}>
           9
         </div>
         <div id="subtract" className="button" onClick={handleSigns}>
           -
         </div>
-        <div className="button" onClick={inputNumber}>
+        <div id="four" className="button" onClick={inputNumber}>
           4
         </div>
-        <div className="button" onClick={inputNumber}>
+        <div id="five" className="button" onClick={inputNumber}>
           5
         </div>
-        <div className="button" onClick={inputNumber}>
+        <div id="six" className="button" onClick={inputNumber}>
           6
         </div>
         <div id="add" className="button" onClick={handleSigns}>
           +
         </div>
-        <div className="button" onClick={inputNumber}>
+        <div id="one" className="button" onClick={inputNumber}>
           1
         </div>
-        <div className="button" onClick={inputNumber}>
+        <div id="two" className="button" onClick={inputNumber}>
           2
         </div>
-        <div className="button" onClick={inputNumber}>
+        <div id="three" className="button" onClick={inputNumber}>
           3
         </div>
         <div id="equals" className="button" onClick={calculate}>
